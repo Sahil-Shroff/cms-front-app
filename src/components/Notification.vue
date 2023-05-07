@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import Modal from "./Modal.vue";
 
 const emit = defineEmits<{
@@ -7,9 +6,11 @@ const emit = defineEmits<{
 }>();
 
 withDefaults(defineProps<{
-        isVisible: boolean
+        isVisible: boolean,
+        notificationMesaage?: string,
     }>(), {
-        isVisible: () => false
+        isVisible: () => false,
+        notificationMesaage: () => 'default message'
 });
 
 </script>
@@ -21,7 +22,7 @@ withDefaults(defineProps<{
             Notification
         </template>
         <template #content>
-            Content
+            {{ notificationMesaage }}
         </template>
         <template #footer>
             <button @click="emit('close')">
