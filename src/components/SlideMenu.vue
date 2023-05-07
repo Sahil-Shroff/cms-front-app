@@ -7,8 +7,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (e: 'pageSelected', tabName: string): void
-}>()
+    (e: 'pageSelected', page: string): void
+}>();
 
 // const tabItemSpacing: Ref<string> = ref('5px');
 
@@ -16,26 +16,47 @@ const emit = defineEmits<{
 
 <template>
     <div id="slide-menu">
-        <div>
+        <div id="search-bar">
             <input type="text" />
         </div>
-        <div v-for="page in currentLeftPanel">
-            <button @click="emit('pageSelected', page)">
-                {{ page }}
-            </button>
+        <div
+            v-for="(page, index) in currentLeftPanel"
+            :key="index" 
+            id="slide-menu-item"
+            @click="emit('pageSelected', page)"
+        >
+            {{ page }}
         </div>
     </div>
 </template>
 
 <style scoped>
+#search-bar {
+    margin: 10px;
+}
+
+#search-bar input {
+    width: 100%;
+}
+
 #slide-menu {
     background-color: aliceblue;
+    border: 1px solid;
     float: left;
-    min-width: 200px;
+    width: 200px;
+    max-width: 100%;
     min-height: 100%;
 }
-#slide-menu button {
+#slide-menu-item {
+    background-color: white;
+    border: 1px solid;
+    border-inline: none;
     width: 200px;
-    margin: 10px;
+    max-width: 100%;
+    padding: 5px;
+    padding-inline: 10px;
+}
+#slide-menu-item:nth-child(2n+1) {
+    border-top: none;
 }
 </style>
