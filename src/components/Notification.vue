@@ -18,28 +18,23 @@ withDefaults(defineProps<{
   <div id="notification">
     <modal :is-visible="isVisible" @close="emit('close')">
         <template #header>
-            <div id="header">
-                <h1>Notification</h1>
-            </div>
+            Notification
         </template>
         <template #content>
-            <div id="content">
-                Content
-            </div>
+            Content
         </template>
         <template #footer>
-            <div id="footer">
-                <button @click="emit('close')">
-                    OK
-                </button>
-            </div>
+            <button @click="emit('close')">
+                OK
+            </button>
         </template>
     </modal>
   </div>
 </template>
 
 <style scoped>
-#header {
-
+button {
+    padding: 10px;
+    padding-inline: 25px;
 }
 </style>
