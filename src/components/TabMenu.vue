@@ -8,11 +8,9 @@ const emit = defineEmits<{
 
 const tabItems: string[] = Array.from(Array<string>(5), (_, index) => 'tab ' + (index + 1));
 const tabMap = Object.fromEntries(
-    tabItems.map(tabItem => [tabItem, {
-        tabItem: Array.from(Array<string>(5), (_, index) => 'tabItem ' + (index + 1)),
-    }])
+    tabItems.map(tabItem => [tabItem, Array.from(Array<string>(5), (_, index) => tabItem + ' ' + (index + 1))])
 );
-const onTabSelected = (tabName) => {
+const onTabSelected = (tabName) => {    
     emit('tabSelected', tabMap[tabName]);
 }
 
