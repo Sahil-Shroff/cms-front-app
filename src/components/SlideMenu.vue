@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
 
 const props = defineProps<{
@@ -10,6 +10,11 @@ const emit = defineEmits<{
     (e: 'pageSelected', page: string): void
 }>();
 
+
+const searchValue: Ref<string> = ref('');
+const selectedLeftMenu = ref(props.currentLeftPanel);
+const filteredCurrentLeftPanel = computed(() => selectedLeftMenu.value.filter((val) => val.toLowerCase().includes(searchValue.value) || searchValue.value === ''));
+
 // const tabItemSpacing: Ref<string> = ref('5px');
 
 </script>
@@ -17,10 +22,10 @@ const emit = defineEmits<{
 <template>
     <div id="slide-menu">
         <div id="search-bar">
-            <input type="text" />
+            <input type="text" v-model="searchValue"/>
         </div>
         <div
-            v-for="(page, index) in currentLeftPanel"
+            v-for="(page, index) in filteredCurrentLeftPanel"
             :key="index" 
             id="slide-menu-item"
             @click="emit('pageSelected', page)"
@@ -33,13 +38,21 @@ const emit = defineEmits<{
 <style scoped>
 #search-bar {
     margin: 10px;
+    max-width: 100%;
 }
 
 #search-bar input {
-    width: 100%;
+    background: white url("../assets/search-icon.svg") no-repeat 1px center;
+    background-size: 14px 14px;
+    border-radius: 10px;
+    padding: 4px;
+    padding-left: 9%;
+    max-width: 70%;
 }
 
 #slide-menu {
+    display: flex;
+    flex-direction: column;
     background-color: aliceblue;
     border: 1px solid;
     float: left;
