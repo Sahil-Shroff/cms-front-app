@@ -7,13 +7,13 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (e: 'pageSelected', page: string): void
+    (e: 'pageSelected', page: string): void,
 }>();
 
 
 const searchValue: Ref<string> = ref('');
-const selectedLeftMenu = ref(props.currentLeftPanel);
-const filteredCurrentLeftPanel = computed(() => selectedLeftMenu.value.filter((val) => val.toLowerCase().includes(searchValue.value) || searchValue.value === ''));
+const isSideMenuShown = ref(true);
+const filteredCurrentLeftPanel = computed(() => props.currentLeftPanel.filter(val => val.toLowerCase().includes(searchValue.value)));
 
 // const tabItemSpacing: Ref<string> = ref('5px');
 
@@ -21,22 +21,34 @@ const filteredCurrentLeftPanel = computed(() => selectedLeftMenu.value.filter((v
 
 <template>
     <div id="slide-menu">
-        <div id="search-bar">
-            <input type="text" v-model="searchValue"/>
+        <div v-show="isSideMenuShown" id="side-menu-open">
+            <div id="search-bar">
+                <input type="text" v-model="searchValue"/>
+                <div id="collapse" @click="isSideMenuShown = !isSideMenuShown">
+                    &larrb;
+                </div>
+            </div>
+            <div
+                v-for="(page, index) in filteredCurrentLeftPanel"
+                :key="index" 
+                id="slide-menu-item"
+                @click="emit('pageSelected', page)"
+            >
+                {{ page }}
+            </div>
         </div>
-        <div
-            v-for="(page, index) in filteredCurrentLeftPanel"
-            :key="index" 
-            id="slide-menu-item"
-            @click="emit('pageSelected', page)"
-        >
-            {{ page }}
+
+        <div v-show="!isSideMenuShown" id="side-menu-closed">
+            <div id="expand" @click="isSideMenuShown = !isSideMenuShown">
+                &rarrb;
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
 #search-bar {
+    display: flex;
     margin: 10px;
     max-width: 100%;
 }
@@ -47,7 +59,19 @@ const filteredCurrentLeftPanel = computed(() => selectedLeftMenu.value.filter((v
     border-radius: 10px;
     padding: 4px;
     padding-left: 9%;
-    max-width: 70%;
+    max-width: 80%;
+}
+
+#collapse {
+    font-size: 20px;
+    font-weight: 300;
+    background-color: azure;
+}
+
+#expand {
+    font-size: 20px;
+    font-weight: 300;
+    display: flex;
 }
 
 #slide-menu {
@@ -65,7 +89,7 @@ const filteredCurrentLeftPanel = computed(() => selectedLeftMenu.value.filter((v
     border: 1px solid;
     border-inline: none;
     width: 200px;
-    max-width: 100%;
+    max-width: 90%;
     padding: 5px;
     padding-inline: 10px;
 }
